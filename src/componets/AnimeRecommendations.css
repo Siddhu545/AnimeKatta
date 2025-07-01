@@ -1,0 +1,40 @@
+
+.recommendation-container {
+  padding: 1rem;
+}
+
+.recommendation-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.recommendation-scroll {
+  display: flex;
+  overflow-x: auto;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  scrollbar-width: thin;
+}
+
+.recommendation-card {
+  flex: 0 0 auto;
+  width: 180px;
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.recommendation-image {
+  width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+}
+
+.recommendation-votes {
+  font-size: 0.875rem;
+  color: #4b5563; /* Tailwind gray-600 */
+  margin-top: 0.25rem;
+}

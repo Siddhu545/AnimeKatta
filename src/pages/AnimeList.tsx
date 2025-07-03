@@ -40,11 +40,22 @@ export const AnimeList = () => {
                     </div>
                 ))}
             </div>
-            <div style={{ display: "flex", justifyContent: "center", marginTop: "2rem", gap: "1rem" }}>
-                <button onClick={goToPrevPage} disabled={currentPage === 1}>
+            <div className="pagination-container">
+                <button
+                    onClick={goToPrevPage}
+                    disabled={currentPage === 1}
+                    className="pagination-button"
+                >
                     Prev
                 </button>
-                <button onClick={goToNextPage} disabled={!hasNextPage}>
+
+                <span className="pagination-page">Page {currentPage}</span>
+
+                <button
+                    onClick={goToNextPage}
+                    disabled={!hasNextPage}
+                    className="pagination-button"
+                >
                     Next
                 </button>
             </div>

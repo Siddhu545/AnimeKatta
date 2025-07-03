@@ -24,7 +24,7 @@ export const AnimeDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     useEffect(() => {
         setLoading(true);
         setError(null);
-        fetchAllAnime()
+        fetchAllAnime(currentPage)
             .then((res) => {
                 setAnimes(res.data);
                 setHasNextPage(res.pagination.has_next_page);

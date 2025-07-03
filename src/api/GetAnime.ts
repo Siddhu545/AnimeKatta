@@ -13,9 +13,9 @@ export const fetchAnimeByID = async (id: number) => {
     }
 }
 
-export const fetchAllAnime = async () => {
+export const fetchAllAnime = async (page : number) => {
     try {
-        const res = await fetch(`${baseURL}/anime`)
+        const res = await fetch(`${baseURL}/anime?page=${page}`)
         const data = await res.json()
         return data
     } catch (error) {
@@ -25,9 +25,8 @@ export const fetchAllAnime = async () => {
 
 export const fetchAnimeByParams = async (debouncedSearch: string) => {
     try {
-        const res = await fetch(`https://api.jikan.moe/v4/anime?q=${debouncedSearch}`);
+        const res = await fetch(`${baseURL}/anime?q=${debouncedSearch}`);
         const data = await res.json()
-        console.log(data)
         return data
     } catch (error) {
         console.log('Error : ', error)

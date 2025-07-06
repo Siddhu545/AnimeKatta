@@ -1,0 +1,54 @@
+.searchbar-container {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.searchbar-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #444;
+  border-radius: 4px;
+  background-color: #1f1f1f;
+  color: white;
+}
+
+.searchbar-dropdown {
+  position: absolute;
+  top: 110%;
+  left: 0;
+  right: 0;
+  background-color: #ffffff;
+  border: 1px solid #333;
+  border-radius: 4px;
+  z-index: 10;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.searchbar-result {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.searchbar-result:hover {
+  background-color: #e29a9a;
+}
+
+.searchbar-thumbnail {
+  width: 40px;
+  height: auto;
+  border-radius: 4px;
+}
+
+.searchbar-loading {
+  color: #ccc;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}

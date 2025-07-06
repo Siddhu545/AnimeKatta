@@ -31,7 +31,7 @@ export const AnimeList = () => {
     <div className="anime-page">
       <header className="anime-header">
         <SearchBar />
-        {/* <GenreDropdown onSelect={handleGenreSelect} /> */}
+        <GenreDropdown onSelect={handleGenreSelect} /> 
       </header>
 
       <section>

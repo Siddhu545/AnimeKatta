@@ -1,21 +1,33 @@
 .genre-dropdown {
-  padding: 0.5rem;
+  margin: 1rem 0;
   display: flex;
   justify-content: center;
-  margin-bottom: 1rem;
 }
 
 .genre-select {
-  padding: 0.5rem 1rem;
+  padding: 0.6rem 1rem;
   font-size: 1rem;
+  font-weight: 500;
   background-color: #141414;
-  color: white;
+  color: #fff;
   border: 1px solid #444;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 250px;
+}
+
+.genre-select:hover {
+  border-color: #888;
+}
+
+.genre-select:focus {
+  outline: none;
+  border-color: #00bcd4;
+  box-shadow: 0 0 0 2px rgba(0, 188, 212, 0.2);
 }
 
 .genre-select option {
   background-color: #141414;
-  color: white;
+  color: #fff;
 }

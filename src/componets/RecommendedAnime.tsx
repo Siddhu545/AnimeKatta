@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Anime } from "../types/Anime";
 import { getRecommendedAnime } from "../api/GetAnime";
 import "./AnimeRecommendations.css";
@@ -15,11 +15,12 @@ type RecommendationResponse = {
 };
 
 export function AnimeRecommendations() {
-    const [recAnimes, setRecAnimes] = useState<RecommendationItem[]>([]);
+    const [recAnimes, setRecAnimes] = useState<RecommendationItem[] | []>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
     const navigate = useNavigate()
+    const scrollRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const fetchRecommendations = async () => {
@@ -38,37 +39,63 @@ export function AnimeRecommendations() {
         fetchRecommendations();
     }, []);
 
+    console.log(recAnimes)
+
     function truncateTitle(title: string) {
-        let maxLength = 20
-        if (title.length > maxLength) {
-            return title.substring(0, maxLength)
-        } else {
-            return title
-        }
+        const maxLength = 20;
+        return title.length > maxLength ? title.slice(0, maxLength) + "..." : title;
     }
 
     if (loading) return <p>Loading recommendations...</p>;
     if (error) return <p className="text-red-500">{error}</p>;
 
+    const uniqueAnimeList = new Map<number, Anime>()
+
+    recAnimes.forEach((item) => {
+        item.entry.forEach((anime) => {
+            if (!uniqueAnimeList.has(anime.mal_id)) {
+                uniqueAnimeList.set(anime.mal_id, anime)
+            }
+        })
+    })
+
+    const uniqueList = Array.from(uniqueAnimeList.values());
+    const scroll = (direction: "left" | "right") => {
+        if (scrollRef.current) {
+            scrollRef.current.scrollBy({
+                left: direction === "left" ? -300 : 300,
+                behavior: "smooth",
+            });
+        }
+    };
+
     return (
         <div className="recommendation-container">
             <h2 className="recommendation-title">Recommended Anime</h2>
-            <div className="recommendation-scroll">
-                {recAnimes.flatMap((item) =>
-                    item.entry.map((anime) => (
-                        <div key={anime.mal_id} className="recommendation-card">
+
+            <div className="scroll-wrapper">
+                <button className="scroll-button left" onClick={() => scroll("left")}>
+                    ←
+                </button>
+                <div className="recommendation-scroll" ref={scrollRef}>
+                    {uniqueList.map((item) => (
+                        <div
+                            key={item.mal_id}
+                            className="recommendation-card"
+                            onClick={() => navigate(`/anime/${item.mal_id}`)}
+                        >
                             <img
-                                src={
-                                    anime.images.jpg.image_url
-                                }
-                                alt={anime.title}
+                                src={item.images.jpg.image_url}
+                                alt={truncateTitle(item.title)}
                                 className="recommendation-image"
                             />
-                            <h3 className="mt-2 font-semibold">{truncateTitle(anime.title)}</h3>
-                            <button onClick={() => navigate(`/anime/${anime.mal_id}`)}>In Detail</button>
+                            <p className="recommendation-name">{item.title}</p>
                         </div>
-                    ))
-                )}
+                    ))}
+                </div>
+                <button className="scroll-button right" onClick={() => scroll("right")}>
+                    →
+                </button>
             </div>
         </div>
     );

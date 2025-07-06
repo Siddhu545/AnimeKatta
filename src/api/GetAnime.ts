@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Entity } from "../types/Anime";
 
 
 const baseURL = `https://api.jikan.moe/v4`
@@ -13,7 +14,7 @@ export const fetchAnimeByID = async (id: number) => {
     }
 }
 
-export const fetchAllAnime = async (page : number) => {
+export const fetchAllAnime = async (page: number) => {
     try {
         const res = await fetch(`${baseURL}/anime?page=${page}`)
         const data = await res.json()
@@ -42,3 +43,14 @@ export const getRecommendedAnime = async () => {
         console.log('Error :', error)
     }
 }
+
+export const getAnimeGenres = async () => {
+    try {
+        const res = await fetch(`${baseURL}/genres/anime`);
+        const data = await res.json();
+        return data;
+    } catch (error) {
+        console.error("Error fetching genres:", error);
+        return { data: [] };
+    }
+};

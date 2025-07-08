@@ -1,8 +1,10 @@
 .anime-page {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 1.5rem;
+  width: 100%;
+  padding: 2rem;
+  box-sizing: border-box;
+  background-color: #0f0f0f;
 }
+
 
 .anime-header {
   display: flex;
@@ -11,81 +13,86 @@
   margin-bottom: 2rem;
 }
 
-.section-title {
-  font-size: 1.5rem;
-  font-weight: bold;
+
+.anime-scroll-wrapper {
+  position: relative;
+  width: 100%;
+  margin: 2rem 0;
+}
+
+.anime-scroll-controls {
+  display: flex;
+  justify-content: space-between;
   margin-bottom: 1rem;
-  color: #fff;
 }
 
-.anime-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 1.5rem;
+.anime-scroll-button {
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  border: none;
+  font-size: 1.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
-.anime-card {
+.anime-scroll-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.anime-scroll-container {
+  display: flex;
+  gap: 1.2rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 1rem 0;
+  scrollbar-width: none;
+}
+
+.anime-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+.anime-scroll-card {
+  flex: 0 0 auto;
+  width: 180px;
   background-color: #1e1e1e;
-  border-radius: 8px;
+  border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
-  cursor: pointer;
   transition: transform 0.2s ease;
+  cursor: pointer;
 }
 
-.anime-card:hover {
+.anime-scroll-card:hover {
   transform: scale(1.05);
 }
 
-.anime-image {
+.anime-scroll-image {
   width: 100%;
-  height: auto;
-  display: block;
+  height: 250px;
   object-fit: cover;
 }
 
-.anime-info {
-  padding: 0.5rem;
+.anime-scroll-info {
+  padding: 0.6rem;
 }
 
-.anime-title {
+.anime-scroll-title {
   font-size: 1rem;
   font-weight: 600;
   color: #fff;
   margin-bottom: 0.25rem;
-}
-
-.anime-trailer {
-  font-size: 0.85rem;
-  color: #00bcd4;
-  text-decoration: underline;
-}
-
-.pagination-container {
-  margin-top: 2rem;
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-}
-
-.pagination-button {
-  padding: 0.5rem 1rem;
-  background-color: #333;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.pagination-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .loading-text,
 .error-text {
   text-align: center;
-  color: white;
+  color: #fff;
   font-size: 1.2rem;
+  margin: 2rem 0;
 }

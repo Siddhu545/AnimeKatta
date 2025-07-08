@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Anime } from "../types/Anime";
 import { getRecommendedAnime } from "../api/GetAnime";
-import "./AnimeRecommendations.css";
+import "./RecommendedAnime.css";
 import { useNavigate } from "react-router-dom";
 
 type RecommendationItem = {
@@ -38,8 +38,6 @@ export function AnimeRecommendations() {
 
         fetchRecommendations();
     }, []);
-
-    console.log(recAnimes)
 
     function truncateTitle(title: string) {
         const maxLength = 20;

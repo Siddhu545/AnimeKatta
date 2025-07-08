@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAnimeData } from "../context/AnimeContext";
 import { SearchBar } from "../componets/searchButton";
@@ -11,17 +11,23 @@ export const AnimeList = () => {
   const {
     animes,
     loading,
-    error,
-    currentPage,
-    goToNextPage,
-    goToPrevPage,
-    hasNextPage,
+    error
   } = useAnimeData();
 
   const navigate = useNavigate();
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   const handleGenreSelect = (genre: Entity) => {
     navigate(`/genre/${genre.mal_id}`);
+  };
+
+  const scroll = (direction: "left" | "right") => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({
+        left: direction === "left" ? -300 : 300,
+        behavior: "smooth",
+      });
+    }
   };
 
   if (loading) return <p className="loading-text">Loading anime...</p>;
@@ -31,65 +37,40 @@ export const AnimeList = () => {
     <div className="anime-page">
       <header className="anime-header">
         <SearchBar />
-        <GenreDropdown onSelect={handleGenreSelect} /> 
+        <GenreDropdown onSelect={handleGenreSelect} />
       </header>
-
       <section>
-        <h2 className="section-title">Recommended for You</h2>
         <AnimeRecommendations />
       </section>
 
       <section>
-        <h2 className="section-title">Browse All Anime</h2>
-        <div className="anime-grid">
-          {animes.map((anime) => (
-            <div
-              key={anime.mal_id}
-              className="anime-card"
-              onClick={() => navigate(`/anime/${anime.mal_id}`)}
-            >
-              <img
-                src={anime.images.jpg.image_url}
-                alt={anime.title}
-                className="anime-image"
-                loading="lazy"
-              />
-              <div className="anime-info">
-                <h3 className="anime-title">{anime.title}</h3>
-                {anime.trailer?.url && (
-                  <a
-                    href={anime.trailer.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="anime-trailer"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    🎬 Watch Trailer
-                  </a>
-                )}
+        <div className="anime-scroll-wrapper">
+          <h2 className="section-title">Browse All Anime</h2>
+
+          <div className="anime-scroll-controls">
+            <button className="anime-scroll-button" onClick={() => scroll("left")}>←</button>
+            <button className="anime-scroll-button" onClick={() => scroll("right")}>→</button>
+          </div>
+
+          <div className="anime-scroll-container" ref={scrollRef}>
+            {animes.map((anime) => (
+              <div
+                key={anime.mal_id}
+                className="anime-scroll-card"
+                onClick={() => {
+                  console.log("Navigate to", anime.mal_id);
+                  navigate(`/anime/${anime.mal_id}`);
+                }}
+              >
+                <img src={anime.images.jpg.image_url} className="anime-scroll-image" alt={anime.title} />
+                <div className="anime-scroll-info">
+                  <h3 className="anime-scroll-title">{anime.title}</h3>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
-
-      <div className="pagination-container">
-        <button
-          onClick={goToPrevPage}
-          disabled={currentPage === 1}
-          className="pagination-button"
-        >
-          ⬅ Prev
-        </button>
-        <span className="pagination-page">Page {currentPage}</span>
-        <button
-          onClick={goToNextPage}
-          disabled={!hasNextPage}
-          className="pagination-button"
-        >
-          Next ➡
-        </button>
-      </div>
     </div>
   );
 };

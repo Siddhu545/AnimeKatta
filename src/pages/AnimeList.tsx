@@ -5,70 +5,77 @@ import { SearchBar } from "../componets/searchButton";
 import { AnimeRecommendations } from "../componets/RecommendedAnime";
 import { GenreDropdown } from "../componets/Genres";
 import { Entity } from "../types/Anime";
-import "./AnimeGrid.css";
 
 export const AnimeList = () => {
-  const {
-    animes,
-    loading,
-    error
-  } = useAnimeData();
-
+  const { animes, loading, error } = useAnimeData();
   const navigate = useNavigate();
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const handleGenreSelect = (genre: Entity) => {
-    navigate(`/genre/${genre.mal_id}`);
+  const handleGenreSelect = (genre: Entity) => navigate(`/genre/${genre.mal_id}`);
+
+  const scroll = (dir: "left" | "right") => {
+    scrollRef.current?.scrollBy({
+      left: dir === "left" ? -300 : 300,
+      behavior: "smooth",
+    });
   };
 
-  const scroll = (direction: "left" | "right") => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollBy({
-        left: direction === "left" ? -300 : 300,
-        behavior: "smooth",
-      });
-    }
-  };
-
-  if (loading) return <p className="loading-text">Loading anime...</p>;
-  if (error) return <p className="error-text">Error: {error}</p>;
+  if (loading) return <p className="text-center text-white py-6">Loading anime…</p>;
+  if (error)   return <p className="text-center text-red-500 py-6">Error: {error}</p>;
 
   return (
-    <div className="anime-page">
-      <header className="anime-header">
+    <div className="min-h-screen w-full bg-zinc-900 text-white px-4 sm:px-6 lg:px-8">
+      {/* header */}
+      <header className="flex flex-col items-center gap-4 py-6">
         <SearchBar />
         <GenreDropdown onSelect={handleGenreSelect} />
       </header>
-      <section>
+
+      {/* recommendations */}
+      <section className="mb-10">
         <AnimeRecommendations />
       </section>
 
-      <section>
-        <div className="anime-scroll-wrapper">
-          <h2 className="section-title">Browse All Anime</h2>
+      {/* all‑anime horizontal list */}
+      <section className="relative">
+        <h2 className="text-2xl font-bold mb-4">Browse All Anime</h2>
 
-          <div className="anime-scroll-controls">
-            <button className="anime-scroll-button" onClick={() => scroll("left")}>←</button>
-            <button className="anime-scroll-button" onClick={() => scroll("right")}>→</button>
-          </div>
+        {/* scroll buttons */}
+        <button
+          aria-label="scroll left"
+          onClick={() => scroll("left")}
+          className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-black/60 text-white text-2xl px-3 py-2 rounded hover:bg-black/75"
+        >
+          ←
+        </button>
+        <button
+          aria-label="scroll right"
+          onClick={() => scroll("right")}
+          className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-black/60 text-white text-2xl px-3 py-2 rounded hover:bg-black/75"
+        >
+          →
+        </button>
 
-          <div className="anime-scroll-container" ref={scrollRef}>
-            {animes.map((anime) => (
-              <div
-                key={anime.mal_id}
-                className="anime-scroll-card"
-                onClick={() => {
-                  console.log("Navigate to", anime.mal_id);
-                  navigate(`/anime/${anime.mal_id}`);
-                }}
-              >
-                <img src={anime.images.jpg.image_url} className="anime-scroll-image" alt={anime.title} />
-                <div className="anime-scroll-info">
-                  <h3 className="anime-scroll-title">{anime.title}</h3>
-                </div>
-              </div>
-            ))}
-          </div>
+        {/* scrollable row */}
+        <div
+          ref={scrollRef}
+          className="flex gap-4 overflow-x-auto scroll-smooth py-4 hide-scrollbar"
+        >
+          {animes.map((anime) => (
+            <div
+              key={anime.mal_id}
+              onClick={() => navigate(`/anime/${anime.mal_id}`)}
+              className="flex-shrink-0 w-40 sm:w-44 bg-zinc-800 rounded-lg overflow-hidden cursor-pointer transform transition-transform hover:scale-105"
+            >
+              <img
+                src={anime.images.jpg.image_url}
+                alt={anime.title}
+                loading="lazy"
+                className="w-full h-[220px] object-cover"
+              />
+              <h3 className="p-2 text-sm text-center truncate">{anime.title}</h3>
+            </div>
+          ))}
         </div>
       </section>
     </div>

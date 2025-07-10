@@ -68,33 +68,48 @@ export function AnimeRecommendations() {
     };
 
     return (
-        <div className="recommendation-container">
-            <h2 className="recommendation-title">Recommended Anime</h2>
+        <div className="p-4 mb-8">
+            <h2 className="text-xl font-semibold text-white mb-4">Recommended Anime</h2>
 
-            <div className="scroll-wrapper">
-                <button className="scroll-button left" onClick={() => scroll("left")}>
+            <div className="relative flex items-center">
+                {/* Scroll Left Button */}
+                <button
+                    className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-black/60 text-white text-2xl px-4 py-2 z-10 rounded hover:bg-neutral-700"
+                    onClick={() => scroll("left")}
+                >
                     ←
                 </button>
-                <div className="recommendation-scroll" ref={scrollRef}>
+
+                {/* Scrollable Area */}
+                <div
+                    ref={scrollRef}
+                    className="flex overflow-x-auto gap-4 py-4 px-2 scroll-smooth hide-scrollbar"
+                >
                     {uniqueList.map((item) => (
                         <div
                             key={item.mal_id}
-                            className="recommendation-card"
                             onClick={() => navigate(`/anime/${item.mal_id}`)}
+                            className="flex-shrink-0 w-[150px] bg-zinc-800 rounded-lg overflow-hidden cursor-pointer transition-transform duration-200 hover:scale-105"
                         >
                             <img
                                 src={item.images.jpg.image_url}
                                 alt={truncateTitle(item.title)}
-                                className="recommendation-image"
+                                className="w-full h-[220px] object-cover"
                             />
-                            <p className="recommendation-name">{item.title}</p>
+                            <p className="p-2 text-sm text-white text-center truncate">{item.title}</p>
                         </div>
                     ))}
                 </div>
-                <button className="scroll-button right" onClick={() => scroll("right")}>
+
+                {/* Scroll Right Button */}
+                <button
+                    className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-black/60 text-white text-2xl px-4 py-2 z-10 rounded hover:bg-neutral-700"
+                    onClick={() => scroll("right")}
+                >
                     →
                 </button>
             </div>
         </div>
+
     );
 }
